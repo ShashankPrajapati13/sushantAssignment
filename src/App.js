@@ -8,6 +8,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [placeData, setPlaceData] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to handle menu visibility
   const weatherApiKey = '0015af1c08d543a7ab8190233242810';
   const openCageApiKey = '1d650aad417b4c5f8ba69b46ae635a92'; // Your OpenCage API key
 
@@ -95,7 +96,10 @@ function App() {
     <>
       <nav className={`navbar ${loading ? 'fade-out' : ''}`}>
         <h1 className="logo">City Info</h1>
-        <ul className="nav-links">
+        <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+        </button>
+        <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
           <li><a href="#location">Location</a></li>
           <li><a href="#weather">Weather</a></li>
           <li><a href="#info">Location Info</a></li>
@@ -118,28 +122,28 @@ function App() {
                 <p>Latitude: {location.lat}, Longitude: {location.lon}</p>
               </section>
             )}
-{weatherData && (
-  <section id="weather" className="weather-info animate">
-    <h2>Current Weather in {weatherData.location.name}, {weatherData.location.region} <i className="fas fa-cloud-sun"></i></h2>
-    <div className="weather-details">
-      <img src={weatherData.current.condition.icon} alt="weather icon" className="weather-icon" />
-      <p><strong>Temperature:</strong> {weatherData.current.temp_c} °C <i className="fas fa-thermometer-half"></i></p>
-      <p><strong>Condition:</strong> {weatherData.current.condition.text}</p>
-      <p><strong>Humidity:</strong> {weatherData.current.humidity}% <i className="fas fa-tint"></i></p>
-      <p><strong>Wind Speed:</strong> {weatherData.current.wind_kph} kph <i className="fas fa-wind"></i></p>
-      <p><strong>Pressure:</strong> {weatherData.current.pressure_mb} mb <i className="fas fa-tachometer-alt"></i></p>
-      <p><strong>Feels Like:</strong> {weatherData.current.feelslike_c} °C <i className="fas fa-temperature-high"></i></p>
-      <p><strong>Visibility:</strong> {weatherData.current.vis_km} km <i className="fas fa-eye"></i></p>
-      <p><strong>Cloud Cover:</strong> {weatherData.current.cloud}% <i className="fas fa-cloud"></i></p>
-      <p><strong>UV Index:</strong> {weatherData.current.uv} <i className="fas fa-sun"></i></p>
-      <p><strong>Last Updated:</strong> {weatherData.current.last_updated}</p>
-    </div>
-  </section>
-)}
+
+            {weatherData && (
+              <section id="weather" className="weather-info animate">
+                <h2>Current Weather in {weatherData.location.name}, {weatherData.location.region} <i className="fas fa-cloud-sun"></i></h2>
+                <img src={weatherData.current.condition.icon} alt="weather icon" className="weather-icon" />
+                <p><strong>Temperature:</strong> {weatherData.current.temp_c} °C <i className="fas fa-thermometer-half"></i></p>
+                <p><strong>Condition:</strong> {weatherData.current.condition.text}</p>
+                <p><strong>Humidity:</strong> {weatherData.current.humidity}% <i className="fas fa-tint"></i></p>
+                <p><strong>Wind Speed:</strong> {weatherData.current.wind_kph} kph <i className="fas fa-wind"></i></p>
+                <p><strong>Pressure:</strong> {weatherData.current.pressure_mb} mb <i className="fas fa-tachometer-alt"></i></p>
+                <p><strong>Feels Like:</strong> {weatherData.current.feelslike_c} °C <i className="fas fa-temperature-high"></i></p>
+                <p><strong>Visibility:</strong> {weatherData.current.vis_km} km <i className="fas fa-eye"></i></p>
+                <p><strong>Cloud Cover:</strong> {weatherData.current.cloud}% <i className="fas fa-cloud"></i></p>
+                <p><strong>UV Index:</strong> {weatherData.current.uv} <i className="fas fa-sun"></i></p>
+                <p><strong>Last Updated:</strong> {weatherData.current.last_updated}</p>
+              </section>
+            )}
 
             {placeData && (
               <section id="info" className="location-data animate">
                 <h2>Location Info <i className="fas fa-info-circle"></i></h2>
+                <img src="https://via.placeholder.com/150" alt="City View" className="city-image" />
                 <p><strong>Formatted Address:</strong> {placeData.formatted}</p>
                 <p><strong>City:</strong> {placeData.components.city || 'N/A'}</p>
                 <p><strong>State:</strong> {placeData.components.state || 'N/A'}</p>
